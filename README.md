@@ -57,3 +57,6 @@ In-app payments
 Delivery scheduling and logistics coordination
 
 For detailed requirements and future plans, please refer to the full Software Requirements Specification (SRS) document.
+
+STATUS=DEV
+VERSION=NONE
