@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../data/models/user_model.dart';
-import '../data/services/api_service.dart';
-import '../core/constants/app_constants.dart';
+import 'package:foody_app/data/models/user_model.dart';
+import 'package:foody_app/data/services/api_service.dart';
+import 'package:foody_app/core/constants/app_constants.dart';
 
 class AuthProvider with ChangeNotifier {
   final ApiService _apiService = ApiService();
@@ -16,7 +16,7 @@ class AuthProvider with ChangeNotifier {
   bool get isAuthenticated => _isAuthenticated;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
-  
+
   // Initialize - check if user is already logged in
   Future<void> init() async {
     _isLoading = true;
@@ -28,12 +28,13 @@ class AuthProvider with ChangeNotifier {
     final userId = prefs.getString(AppConstants.userIdKey);
     final userName = prefs.getString(AppConstants.userNameKey);
     final userEmail = prefs.getString(AppConstants.userEmailKey);
-    
-    if (userId != null && userName != null && userEmail != null) {
+
+    // Added mock user to test all functionalities without backend
+    if (true) { // (userId != null && userName != null && userEmail != null) {
       _user = UserModel(
-        id: userId,
-        name: userName,
-        email: userEmail,
+        id: '1', // userId,
+        name: 'mockUser', //userName,
+        email: 'mockUser@mail.ru', // userEmail,
         role: 'consumer',
       );
       _isAuthenticated = true;

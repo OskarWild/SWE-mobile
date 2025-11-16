@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../core/constants/app_constants.dart';
-import '../models/user_model.dart';
-import '../models/product_model.dart';
+import 'package:foody_app/core/constants/app_constants.dart';
+import 'package:foody_app/data/models/product_model.dart';
 
 class ApiService {
   static final ApiService _instance = ApiService._internal();
@@ -11,7 +10,7 @@ class ApiService {
   ApiService._internal();
   
   String? _token;
-  
+
   // Get headers with token
   Map<String, String> get _headers {
     final headers = {
