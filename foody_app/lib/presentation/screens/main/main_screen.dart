@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../providers/auth_provider.dart';
-import '../catalog/catalog_screen.dart';
-import '../auth/login_screen.dart';
+import 'package:foody_app/core/constants/app_constants.dart';
+import 'package:foody_app/providers/auth_provider.dart';
+import 'package:foody_app/providers/chat_list_provider.dart';
+import 'package:foody_app/presentation/screens/catalog/catalog_screen.dart';
+import 'package:foody_app/presentation/screens/auth/login_screen.dart';
+import 'package:foody_app/presentation/screens/chat/chat_list_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -17,7 +20,10 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = [
     const CatalogScreen(),
     const Center(child: Text('Orders Screen')),
-    const Center(child: Text('Chat Screen')),
+    ChangeNotifierProvider(
+      create: (_) => ChatListProvider(AppConstants.wsUrl),
+      child: const ChatListScreen(),
+    ),
     const ProfileScreen(),
   ];
 

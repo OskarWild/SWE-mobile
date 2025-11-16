@@ -11,7 +11,9 @@ class AppTheme {
   static const Color cardColor = Color(0xFFFFFFFF);
   static const Color textPrimaryColor = Color(0xFF831843); // Dark pink
   static const Color textSecondaryColor = Color(0xFF9D174D); // Medium dark pink
-  
+  static const Color warningColor = Color(0xFFF5F5F5); // Light grey
+  static const Color warningText = Color(0xFF374151); // Dark grey
+
   static ThemeData lightTheme() {
     return ThemeData(
       useMaterial3: true,
@@ -19,7 +21,6 @@ class AppTheme {
         primary: primaryColor,
         secondary: secondaryColor,
         error: errorColor,
-        background: backgroundColor,
         surface: cardColor,
       ),
       scaffoldBackgroundColor: backgroundColor,
@@ -111,9 +112,9 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryColor,
           foregroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(horizontal: 32, vertical: 18),
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(12),
           ),
           elevation: 3,
           textStyle: GoogleFonts.poppins(
@@ -134,11 +135,27 @@ class AppTheme {
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: cardColor,
         selectedItemColor: primaryColor,
-        unselectedItemColor: textSecondaryColor.withOpacity(0.6),
+        unselectedItemColor: textSecondaryColor.withValues(alpha: 0.6),
         selectedLabelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
         unselectedLabelStyle: GoogleFonts.poppins(),
         type: BottomNavigationBarType.fixed,
         elevation: 8,
+      ),
+
+      // Snack Bar Theme
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: warningColor,
+        contentTextStyle: GoogleFonts.poppins(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          color: warningText,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        behavior: SnackBarBehavior.floating,
+        elevation: 3,
+        actionTextColor: primaryColor,
       ),
     );
   }

@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (mounted) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => authProvider.isAuthenticated
+          builder: (_) => true // authProvider.isAuthenticated
               ? const MainScreen()
               : const LoginScreen(),
         ),

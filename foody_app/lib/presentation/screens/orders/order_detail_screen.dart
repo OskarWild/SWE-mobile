@@ -182,10 +182,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                           vertical: 6,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: _getStatusColor(_order!.status).withOpacity(0.1),
+                                          color: _getStatusColor(_order!.status).withValues(alpha: 0.1),
                                           borderRadius: BorderRadius.circular(20),
                                           border: Border.all(
-                                            color: _getStatusColor(_order!.status).withOpacity(0.3),
+                                            color: _getStatusColor(_order!.status).withValues(alpha: 0.3),
                                           ),
                                         ),
                                         child: Text(
@@ -348,7 +348,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
                           // Total
                           Card(
-                            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
                             child: Padding(
                               padding: const EdgeInsets.all(16),
                               child: Row(
