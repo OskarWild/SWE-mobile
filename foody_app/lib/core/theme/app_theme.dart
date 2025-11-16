@@ -157,6 +157,11 @@ class AppTheme {
         elevation: 3,
         actionTextColor: primaryColor,
       ),
+
+      listTileTheme: ListTileThemeData(
+        textColor: textPrimaryColor,
+        iconColor: textPrimaryColor,
+      )
     );
   }
 }

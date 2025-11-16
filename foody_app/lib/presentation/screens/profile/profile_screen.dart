@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:foody_app/providers/auth_provider.dart';
 import 'package:foody_app/presentation/screens/auth/login_screen.dart';
+import 'package:foody_app/core/theme/app_theme.dart';
 
 
 class ProfileScreen extends StatelessWidget {
@@ -64,7 +65,7 @@ class ProfileScreen extends StatelessWidget {
                     // TODO: Navigate to edit profile
                   },
                 ),
-                const Divider(height: 1),
+                const Divider(height: 1, color: AppTheme.secondaryColor),
                 ListTile(
                   leading: const Icon(Icons.location_on_outlined),
                   title: const Text('Addresses'),
@@ -73,7 +74,7 @@ class ProfileScreen extends StatelessWidget {
                     // TODO: Navigate to addresses
                   },
                 ),
-                const Divider(height: 1),
+                const Divider(height: 1, color: AppTheme.secondaryColor),
                 ListTile(
                   leading: const Icon(Icons.notifications_outlined),
                   title: const Text('Notifications'),
@@ -99,7 +100,7 @@ class ProfileScreen extends StatelessWidget {
                     // TODO: Navigate to help
                   },
                 ),
-                const Divider(height: 1),
+                const Divider(height: 1, color: AppTheme.secondaryColor),
                 ListTile(
                   leading: const Icon(Icons.info_outline),
                   title: const Text('About'),
