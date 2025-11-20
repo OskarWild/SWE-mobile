@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:foody_app/providers/chat_list_provider.dart';
 import 'package:foody_app/data/models/chat_dialogue_model.dart';
+import 'package:foody_app/core/constants/app_constants.dart';
 import 'chat_conversation_screen.dart';
 
 
@@ -337,7 +338,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
               contactName: dialogue.contactName,
               isOnline: dialogue.isOnline,
               dialogueId: dialogue.id,
-                wsUrl: 'ws://10.0.2.2:8080',
+                wsUrl: AppConstants.wsUrl,
             ),
           ),
         );

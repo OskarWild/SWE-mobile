@@ -1,13 +1,14 @@
 class AppConstants {
   // API Base URL - замени на свой backend URL
   static const String baseUrl = 'http://localhost:8000/api';
-  static const String wsUrl = 'ws://10.0.2.2:8080/ws'; // TODO: replace with actual websocket;
+  static const String wsUrl = 'ws://localhost:8080/ws'; // 10.0.2.2:8080/ws';
   
   // API Endpoints
   static const String loginEndpoint = '/auth/login';
   static const String registerEndpoint = '/auth/register';
   static const String itemsEndpoint = '/items/';
   static const String categoriesEndpoint = '/categories/';
+  static const String ordersEndpoint = '/orders/';
   static const String mainPageEndpoint = '/main-page';
   
   // Storage Keys
