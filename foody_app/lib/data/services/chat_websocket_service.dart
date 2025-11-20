@@ -1,3 +1,4 @@
+// lib/data/services/chat_websocket_service.dart
 import 'dart:async';
 import 'dart:convert';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -49,8 +50,8 @@ class ChatWebSocketService {
       _startPingTimer();
       print('WebSocket connected successfully'); // Delete on prod
 
+      // Request initial dialogues list
       send({'type': 'get_dialogues'});
-
     } catch (e) {
       print('Failed to connect: $e'); // Delete on prod
       _isConnecting = false;
@@ -94,6 +95,42 @@ class ChatWebSocketService {
     } else {
       print('Cannot send message: WebSocket not connected'); // Delete on prod
     }
+  }
+
+  // Dialogue-related methods
+  void getDialogues() {
+    send({'type': 'get_dialogues'});
+  }
+
+  void markDialogueAsRead(String dialogueId) {
+    send({
+      'type': 'mark_read',
+      'dialogueId': dialogueId,
+    });
+  }
+
+  void createDialogue(String contactName) {
+    send({
+      'type': 'create_dialogue',
+      'contactName': contactName,
+    });
+  }
+
+  // Message-related methods
+  void getMessages(String dialogueId) {
+    send({
+      'type': 'get_messages',
+      'dialogueId': dialogueId,
+    });
+  }
+
+  void sendMessage(String dialogueId, String text) {
+    send({
+      'type': 'send_message',
+      'dialogueId': dialogueId,
+      'text': text,
+      'timestamp': DateTime.now().toIso8601String(),
+    });
   }
 
   void disconnect() {

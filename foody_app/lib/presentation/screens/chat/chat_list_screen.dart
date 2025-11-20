@@ -6,7 +6,7 @@ import 'package:foody_app/providers/chat_list_provider.dart';
 import 'package:foody_app/data/models/chat_dialogue_model.dart';
 import 'chat_conversation_screen.dart';
 
-// TODO: delete unnecesary colors
+
 class ChatListScreen extends StatefulWidget {
   const ChatListScreen({super.key});
 
@@ -26,6 +26,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
 
   void _showNewChatDialog() {
     final contactNameController = TextEditingController();
+    final chatProvider = context.read<ChatListProvider>();
 
     showDialog(
       context: context,
@@ -86,7 +87,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   onPressed: () {
                     final name = contactNameController.text.trim();
                     if (name.isNotEmpty) {
-                      context.read<ChatListProvider>().createNewDialogue(name);
+                      chatProvider.createNewDialogue(name);
                       Navigator.pop(context);
                     }
                   },
@@ -186,18 +187,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                     label: Text(
                       'Retry',
                       style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-                    ),
-                    // TODO: Get rid of it
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.primaryColor,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
                     ),
                   ),
                 ],
@@ -348,6 +337,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
               contactName: dialogue.contactName,
               isOnline: dialogue.isOnline,
               dialogueId: dialogue.id,
+                wsUrl: 'ws://10.0.2.2:8080',
             ),
           ),
         );

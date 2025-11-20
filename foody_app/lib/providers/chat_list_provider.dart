@@ -17,6 +17,7 @@ class ChatListProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
   bool get isConnected => _wsService.isConnected;
+  ChatWebSocketService get wsService => _wsService;
 
   ChatListProvider(String wsUrl) : _wsService = ChatWebSocketService(wsUrl) {
     _initWebSocket();
