@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import '../../../data/models/order_model.dart';
-import '../../../data/services/api_service.dart';
+import 'package:foody_app/data/models/order_model.dart';
+import 'package:foody_app/data/services/api_service.dart';
+import 'package:foody_app/providers/auth_provider.dart';
 import 'order_detail_screen.dart';
 
 class OrdersScreen extends StatefulWidget {
@@ -21,7 +23,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
   @override
   void initState() {
     super.initState();
-    _loadOrders();
+    Future.microtask(() async {
+      _loadOrders();
+    });
   }
 
   Future<void> _loadOrders() async {
@@ -31,7 +35,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
     });
 
     try {
-      final ordersData = await _apiService.getOrders();
+      final authProvider = context.read<AuthProvider>();
+      final user = authProvider.user;
+      final ordersData = await _apiService.getOrders(
+        userId: user?.id ?? ''
+      );
       final orders = ordersData.map((json) => OrderModel.fromJson(json)).toList();
       
       // Sort by created date (newest first)

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:foody_app/providers/cart_provider.dart';
+import 'package:foody_app/providers/auth_provider.dart';
 import 'package:foody_app/data/services/api_service.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -62,6 +63,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       // Create orders for each supplier
       final List<String> createdOrderIds = [];
 
+      final authProvider = context.read<AuthProvider>();
+      final user = authProvider.user;
+
       for (final entry in groupedBySupplier.entries) {
         final supplierId = entry.key;
         final items = entry.value;
@@ -74,6 +78,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
         // Prepare order data for this supplier
         final orderData = {
+          'user_id': user?.id ?? '',
           'supplier_id': supplierId,
           'items': items,
           'total_amount': supplierTotal,

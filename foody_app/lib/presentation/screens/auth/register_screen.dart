@@ -16,6 +16,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _surnameController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _businessNameController = TextEditingController();
   final _businessTypeController = TextEditingController();
@@ -28,6 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void dispose() {
     _nameController.dispose();
     _surnameController.dispose();
+    _usernameController.dispose();
     _emailController.dispose();
     _businessNameController.dispose();
     _businessTypeController.dispose();
@@ -53,6 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final success = await authProvider.register(
         _nameController.text.trim(),
         _surnameController.text.trim(),
+        _usernameController.text.trim(),
         _emailController.text.trim(),
         _businessNameController.text.trim(),
         _businessTypeController.text.trim(),
@@ -111,7 +114,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     labelText: 'Surname',
                     prefixIcon: Icon(Icons.person_outline),
                   ),
-                  validator: Validators.validateName,
+                  validator: Validators.validateSurname,
+                ),
+                const SizedBox(height: 16),
+
+                // Username Field
+                TextFormField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Username (will be used as login)',
+                    prefixIcon: Icon(Icons.person_outline),
+                  ),
+                  validator: Validators.validateUsername,
                 ),
                 const SizedBox(height: 16),
                 
@@ -135,10 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     prefixIcon: Icon(Icons.business_outlined),
                   ),
                   validator: (v) {
-                    if (v == null || v.isEmpty) {
-                      return 'Please enter business name';
-                    }
-                    return null;
+                    return Validators.validateRequired(v, 'Business name');
                   },
                 ),
                 const SizedBox(height: 16),
@@ -151,10 +162,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     prefixIcon: Icon(Icons.category_outlined),
                   ),
                   validator: (v) {
-                    if (v == null || v.isEmpty) {
-                      return 'Please enter business type';
-                    }
-                    return null;
+                    return Validators.validateRequired(v, 'Business type');
                   },
                 ),
                 const SizedBox(height: 16),

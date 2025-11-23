@@ -47,7 +47,7 @@ class ApiService {
     try {
       final response = await http.post(
         Uri.parse('${AppConstants.baseUrl}${AppConstants.loginEndpoint}'),
-        headers: {'Content-Type': 'application/json'},
+        headers: _headers,
         body: jsonEncode({
           'username': username,
           'password': password,
@@ -70,14 +70,15 @@ class ApiService {
   }
   
   // Register
-  Future<Map<String, dynamic>> register(String name, String surname, String email, String businessName, String businessType, String password, String userType) async {
+  Future<Map<String, dynamic>> register(String name, String surname, String username, String email, String businessName, String businessType, String password, String userType) async {
     try {
       final response = await http.post(
         Uri.parse('${AppConstants.baseUrl}${AppConstants.registerEndpoint}'),
-        headers: {'Content-Type': 'application/json'},
+        headers: _headers,
         body: jsonEncode({
           'name': name,
           'surname': surname,
+          'username': username,
           'email': email,
           'businessType': businessType,
           'businessName': businessName,
@@ -100,13 +101,44 @@ class ApiService {
       return {'success': false, 'message': 'Network error: $e'};
     }
   }
-  
+
+  // Create Product
+  Future<Map<String, dynamic>> createProduct(String? supplierId, Map<String, dynamic> productData) async {
+    try {
+      String supplierIdTemp = supplierId as String;
+      String url = '${AppConstants.baseUrl}${AppConstants.itemsEndpoint}';
+
+      final response = await http.post(
+        Uri.parse(url),
+        headers: _headers,
+        body: jsonEncode({
+          'request': jsonEncode(productData),
+          'userId': supplierIdTemp,
+        }),
+      );
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return {'success': data['success'], 'data': {'message': data['message']}};
+      } else {
+        final error = jsonDecode(response.body);
+        return {'success': false, 'message': error['message'] ?? 'Product Creation failed'};
+      }
+    } catch (e) {
+      return {'success': false, 'message': 'Network error: $e'};
+    }
+  }
+
   // Get products with filters
   Future<List<ProductModel>> getProducts({String? userId, String? search, String? categoryId, String? sortBy}) async {
     try {
       String url = '${AppConstants.baseUrl}${AppConstants.itemsEndpoint}';
       final queryParams = <String, String>{};
-      
+
+      String userIdTemp = userId as String;
+      if (userId != '') {
+        queryParams['userId'] = userIdTemp;
+      }
       if (search != null && search.isNotEmpty) {
         queryParams['search'] = search;
       }
@@ -116,7 +148,7 @@ class ApiService {
       if (sortBy != null) {
         queryParams['sort'] = sortBy;
       }
-      
+
       if (queryParams.isNotEmpty) {
         url += '?${Uri(queryParameters: queryParams).query}';
       }
@@ -138,7 +170,7 @@ class ApiService {
   }
 
   // Get single product by ID
-    Future<ProductModel> getProduct(String productId) async {
+  Future<ProductModel> getProduct(String productId) async {
       try {
         final response = await http.get(
           Uri.parse('${AppConstants.baseUrl}${AppConstants.itemsEndpoint}$productId'),
@@ -159,7 +191,7 @@ class ApiService {
     }
 
   // Update product
-    Future<Map<String, dynamic>> updateProduct(String productId, Map<String, dynamic> productData) async {
+  Future<Map<String, dynamic>> updateProduct(String productId, Map<String, dynamic> productData) async {
       try {
         final response = await http.put(
           Uri.parse('${AppConstants.baseUrl}${AppConstants.itemsEndpoint}$productId'),
@@ -183,7 +215,7 @@ class ApiService {
     }
 
   // Delete product
-    Future<Map<String, dynamic>> deleteProduct(String productId) async {
+  Future<Map<String, dynamic>> deleteProduct(String productId) async {
       try {
         final response = await http.delete(
           Uri.parse('${AppConstants.baseUrl}${AppConstants.itemsEndpoint}$productId'),
@@ -204,7 +236,7 @@ class ApiService {
       }
     }
 
-    // Create order
+  // Create order
   Future<Map<String, dynamic>> createOrder(Map<String, dynamic> orderData) async {
     try {
       final response = await http.post(
@@ -225,10 +257,11 @@ class ApiService {
   }
   
   // Get user orders
-  Future<List<dynamic>> getOrders() async {
+  Future<List<dynamic>> getOrders({String? userId}) async {
     try {
+      String userIdTemp = userId as String;
       final response = await http.get(
-        Uri.parse('${AppConstants.baseUrl}${AppConstants.ordersEndpoint}'),
+        Uri.parse('${AppConstants.baseUrl}${AppConstants.ordersEndpoint}$userIdTemp'),
         headers: _headers,
       );
       
@@ -246,7 +279,7 @@ class ApiService {
   Future<Map<String, dynamic>> getOrderById(String orderId) async {
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.baseUrl}${AppConstants.ordersEndpoint}$orderId/'),
+        Uri.parse('${AppConstants.baseUrl}${AppConstants.ordersEndpoint}$orderId'),
         headers: _headers,
       );
       
@@ -264,7 +297,7 @@ class ApiService {
   Future<Map<String, dynamic>> cancelOrder(String orderId) async {
     try {
       final response = await http.patch(
-        Uri.parse('${AppConstants.baseUrl}/orders/$orderId/'),
+        Uri.parse('${AppConstants.baseUrl}${AppConstants.ordersEndpoint}$orderId'),
         headers: _headers,
         body: jsonEncode({'status': 'cancelled'}),
       );

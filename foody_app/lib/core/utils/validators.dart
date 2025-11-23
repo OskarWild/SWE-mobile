@@ -44,6 +44,32 @@ class Validators {
     
     return null;
   }
+
+  // Surname validation
+  static String? validateSurname(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Surname is required';
+    }
+
+    if (value.length < 2) {
+      return 'Surname must be at least 2 characters';
+    }
+
+    return null;
+  }
+
+  // Username validation
+  static String? validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'validateUsername is required';
+    }
+
+    if (value.length < 2) {
+      return 'validateUsername must be at least 5 characters';
+    }
+
+    return null;
+  }
   
   // Required field validation
   static String? validateRequired(String? value, String fieldName) {

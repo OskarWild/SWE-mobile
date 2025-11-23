@@ -45,13 +45,12 @@ class AuthProvider with ChangeNotifier {
   }
   
   // Login
-  Future<bool> login(String email, String password) async {
+  Future<bool> login(String username, String password) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
     
     try {
-      String username = email.split('@')[0];
       final result = await _apiService.login(username, password);
       
       if (result['success'] == true) {
@@ -84,13 +83,13 @@ class AuthProvider with ChangeNotifier {
   }
   
   // Register
-  Future<bool> register(String name, String surname, String email, String businessName, String businessType, String password, String userType) async {
+  Future<bool> register(String name, String surname, String username, String email, String businessName, String businessType, String password, String userType) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
     
     try {
-      final result = await _apiService.register(name, surname, email, businessName, businessType, password, userType);
+      final result = await _apiService.register(name, surname, username, email, businessName, businessType, password, userType);
       
       if (result['success'] == true) {
         final userData = result['data'];

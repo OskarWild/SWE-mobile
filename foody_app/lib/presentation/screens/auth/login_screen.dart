@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:foody_app/providers/auth_provider.dart';
 import 'package:foody_app/core/utils/validators.dart';
 import 'package:foody_app/presentation/screens/main/main_screen.dart';
-import 'package:foody_app/presentation/screens/auth/register_screen.dart';
 
 import 'choice_screen.dart';
 
@@ -16,13 +15,13 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -32,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final authProvider = context.read<AuthProvider>();
       
       final success = await authProvider.login(
-        _emailController.text.trim(),
+        _usernameController.text.trim(),
         _passwordController.text,
       );
 
@@ -86,15 +85,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 48),
                   
-                  // Email Field
+                  // Username Field
                   TextFormField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
+                    controller: _usernameController,
+                    keyboardType: TextInputType.name,
                     decoration: const InputDecoration(
-                      labelText: 'Email',
-                      prefixIcon: Icon(Icons.email_outlined),
+                      labelText: 'Username',
+                      prefixIcon: Icon(Icons.person_2_outlined),
                     ),
-                    validator: Validators.validateEmail,
+                    validator: Validators.validateUsername,
                   ),
                   const SizedBox(height: 16),
                   
