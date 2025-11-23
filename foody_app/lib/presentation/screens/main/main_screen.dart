@@ -5,6 +5,7 @@ import 'package:foody_app/providers/chat_list_provider.dart';
 import 'package:foody_app/presentation/screens/catalog/catalog_screen.dart';
 import 'package:foody_app/presentation/screens/chat/chat_list_screen.dart';
 import 'package:foody_app/presentation/screens/profile/profile_screen.dart';
+import 'package:foody_app/presentation/screens/orders/orders_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -18,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     const CatalogScreen(),
-    const Center(child: Text('Orders Screen')),
+    const OrdersScreen(),
     ChangeNotifierProvider(
       create: (_) => ChatListProvider(AppConstants.wsUrl),
       child: const ChatListScreen(),

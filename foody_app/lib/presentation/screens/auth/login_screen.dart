@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../providers/auth_provider.dart';
-import '../../../core/utils/validators.dart';
-import '../main/main_screen.dart';
-import 'register_screen.dart';
+import 'package:foody_app/providers/auth_provider.dart';
+import 'package:foody_app/core/utils/validators.dart';
+import 'package:foody_app/presentation/screens/main/main_screen.dart';
+import 'package:foody_app/presentation/screens/auth/register_screen.dart';
+
+import 'choice_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -149,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => const RegisterScreen()),
+                            MaterialPageRoute(builder: (_) => const UserSelectionPage()),
                           );
                         },
                         child: const Text('Register'),

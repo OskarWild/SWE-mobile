@@ -28,14 +28,14 @@ class AuthProvider with ChangeNotifier {
     final userId = prefs.getString(AppConstants.userIdKey);
     final userName = prefs.getString(AppConstants.userNameKey);
     final userEmail = prefs.getString(AppConstants.userEmailKey);
+    final userType = prefs.getString(AppConstants.userTypeKey);
 
-    // Added mock user to test all functionalities without backend
-    if (true) { // (userId != null && userName != null && userEmail != null) {
+    if (userId != null && userName != null && userEmail != null) {
       _user = UserModel(
-        id: '1', // userId,
-        name: 'mockUser', //userName,
-        email: 'mockUser@mail.ru', // userEmail,
-        role: 'consumer',
+        id: userId,
+        name: userName,
+        email: userEmail,
+        role: userType,
       );
       _isAuthenticated = true;
     }
@@ -51,12 +51,14 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
     
     try {
-      final result = await _apiService.login(email, password);
+      String username = email.split('@')[0];
+      final result = await _apiService.login(username, password);
       
       if (result['success'] == true) {
         final userData = result['data'];
         _user = UserModel.fromJson(userData['user'] ?? userData);
         _isAuthenticated = true;
+        print(_user);
         
         // Save user data
         final prefs = await SharedPreferences.getInstance();
@@ -82,13 +84,13 @@ class AuthProvider with ChangeNotifier {
   }
   
   // Register
-  Future<bool> register(String name, String email, String password) async {
+  Future<bool> register(String name, String surname, String email, String businessName, String businessType, String password, String userType) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
     
     try {
-      final result = await _apiService.register(name, email, password);
+      final result = await _apiService.register(name, surname, email, businessName, businessType, password, userType);
       
       if (result['success'] == true) {
         final userData = result['data'];

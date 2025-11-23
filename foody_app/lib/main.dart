@@ -18,9 +18,10 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
       ],
       child: MaterialApp(
-        title: 'Foody', // Изменено с 'SCP Platform'
+        title: 'Foody',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme(),
         home: const SplashScreen(),
@@ -40,22 +41,20 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _initialize();
-  }
+    Future.microtask(() async {
+      final authProvider = context.read<AuthProvider>();
+      await authProvider.init();
 
-  Future<void> _initialize() async {
-    final authProvider = context.read<AuthProvider>();
-    await authProvider.init();
-
-    if (mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => authProvider.isAuthenticated
-              ? const MainScreen()
-              : const LoginScreen(),
-        ),
-      );
-    }
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => authProvider.isAuthenticated
+                ? const MainScreen()
+                : const LoginScreen(),
+          ),
+        );
+      }
+    });
   }
 
   @override

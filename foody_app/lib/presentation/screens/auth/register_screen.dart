@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../providers/auth_provider.dart';
-import '../../../core/utils/validators.dart';
-import '../main/main_screen.dart';
+import 'package:foody_app/providers/auth_provider.dart';
+import 'package:foody_app/core/utils/validators.dart';
+import 'package:foody_app/presentation/screens/main/main_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  final String userType;
+  const RegisterScreen({required this.userType, super.key});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -14,7 +15,10 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  final _surnameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _businessNameController = TextEditingController();
+  final _businessTypeController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
@@ -23,7 +27,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void dispose() {
     _nameController.dispose();
+    _surnameController.dispose();
     _emailController.dispose();
+    _businessNameController.dispose();
+    _businessTypeController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -45,8 +52,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       
       final success = await authProvider.register(
         _nameController.text.trim(),
+        _surnameController.text.trim(),
         _emailController.text.trim(),
+        _businessNameController.text.trim(),
+        _businessTypeController.text.trim(),
         _passwordController.text,
+        widget.userType
       );
 
       if (!mounted) return;
@@ -86,7 +97,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(
-                    labelText: 'Full Name',
+                    labelText: 'Name',
+                    prefixIcon: Icon(Icons.person_outline),
+                  ),
+                  validator: Validators.validateName,
+                ),
+                const SizedBox(height: 16),
+
+                // Surname Field
+                TextFormField(
+                  controller: _surnameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Surname',
                     prefixIcon: Icon(Icons.person_outline),
                   ),
                   validator: Validators.validateName,
@@ -104,7 +126,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   validator: Validators.validateEmail,
                 ),
                 const SizedBox(height: 16),
-                
+
+                // Business Name Field
+                TextFormField(
+                  controller: _businessNameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Business Name',
+                    prefixIcon: Icon(Icons.business_outlined),
+                  ),
+                  validator: (v) {
+                    if (v == null || v.isEmpty) {
+                      return 'Please enter business name';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+
+                // Business Type Field
+                TextFormField(
+                  controller: _businessTypeController,
+                  decoration: const InputDecoration(
+                    labelText: 'Business Type',
+                    prefixIcon: Icon(Icons.category_outlined),
+                  ),
+                  validator: (v) {
+                    if (v == null || v.isEmpty) {
+                      return 'Please enter business type';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+
                 // Password Field
                 TextFormField(
                   controller: _passwordController,
@@ -179,6 +233,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     TextButton(
                       onPressed: () {
+                        Navigator.of(context).pop();
                         Navigator.of(context).pop();
                       },
                       child: const Text('Login'),

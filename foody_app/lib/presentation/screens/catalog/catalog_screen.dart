@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../data/models/product_model.dart';
-import '../../../data/services/api_service.dart';
-import 'product_detail_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:foody_app/data/models/product_model.dart';
+import 'package:foody_app/data/services/api_service.dart';
+import 'package:foody_app/providers/cart_provider.dart';
+import 'package:foody_app/providers/auth_provider.dart';
+import 'package:foody_app/presentation/screens/catalog/product_detail_screen.dart';
+import 'package:foody_app/presentation/screens/cart/cart_screen.dart';
 
 class CatalogScreen extends StatefulWidget {
   const CatalogScreen({super.key});
@@ -13,16 +17,19 @@ class CatalogScreen extends StatefulWidget {
 class _CatalogScreenState extends State<CatalogScreen> {
   final ApiService _apiService = ApiService();
   final TextEditingController _searchController = TextEditingController();
-  
+
   List<ProductModel> _products = [];
   bool _isLoading = false;
   String? _error;
   String? _selectedSort;
+  String? _selectedCategory;
 
   @override
   void initState() {
     super.initState();
-    _loadProducts();
+    Future.microtask(() async {
+      _loadProducts();
+    });
   }
 
   @override
@@ -38,9 +45,13 @@ class _CatalogScreenState extends State<CatalogScreen> {
     });
 
     try {
+      final authProvider = context.read<AuthProvider>();
+      final user = authProvider.user;
       final products = await _apiService.getProducts(
+        userId: user?.id ?? '',
         search: _searchController.text.isEmpty ? null : _searchController.text,
         sortBy: _selectedSort,
+        categoryId: _selectedCategory,
       );
       setState(() {
         _products = products;
@@ -98,6 +109,51 @@ class _CatalogScreenState extends State<CatalogScreen> {
       appBar: AppBar(
         title: const Text('Catalog'),
         actions: [
+          Consumer<CartProvider>(
+            builder: (context, cartProvider, child) {
+              return Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.shopping_cart),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const CartScreen(),
+                        ),
+                      );
+                    },
+                    tooltip: 'Cart',
+                  ),
+                  if (cartProvider.itemCount > 0)
+                    Positioned(
+                      right: 8,
+                      top: 8,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        constraints: const BoxConstraints(
+                          minWidth: 16,
+                          minHeight: 16,
+                        ),
+                        child: Text(
+                          '${cartProvider.itemCount}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.filter_list),
             onPressed: _showSortOptions,
@@ -117,12 +173,12 @@ class _CatalogScreenState extends State<CatalogScreen> {
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _searchController.clear();
-                          _loadProducts();
-                        },
-                      )
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    _searchController.clear();
+                    _loadProducts();
+                  },
+                )
                     : null,
               ),
               onSubmitted: (_) => _loadProducts(),
@@ -134,52 +190,52 @@ class _CatalogScreenState extends State<CatalogScreen> {
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _error != null
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                            const SizedBox(height: 16),
-                            Text('Error: $_error'),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: _loadProducts,
-                              child: const Text('Retry'),
-                            ),
-                          ],
-                        ),
-                      )
-                    : _products.isEmpty
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(Icons.shopping_bag_outlined, size: 64),
-                                const SizedBox(height: 16),
-                                Text(
-                                  'No products found',
-                                  style: Theme.of(context).textTheme.titleMedium,
-                                ),
-                              ],
-                            ),
-                          )
-                        : RefreshIndicator(
-                            onRefresh: _loadProducts,
-                            child: GridView.builder(
-                              padding: const EdgeInsets.all(16),
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: 0.7,
-                                crossAxisSpacing: 16,
-                                mainAxisSpacing: 16,
-                              ),
-                              itemCount: _products.length,
-                              itemBuilder: (context, index) {
-                                final product = _products[index];
-                                return ProductCard(product: product);
-                              },
-                            ),
-                          ),
+                ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text('Error: $_error'),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _loadProducts,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            )
+                : _products.isEmpty
+                ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.shopping_bag_outlined, size: 64),
+                  const SizedBox(height: 16),
+                  Text(
+                    'No products found',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ],
+              ),
+            )
+                : RefreshIndicator(
+              onRefresh: _loadProducts,
+              child: GridView.builder(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.7,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                ),
+                itemCount: _products.length,
+                itemBuilder: (context, index) {
+                  final product = _products[index];
+                  return ProductCard(product: product);
+                },
+              ),
+            ),
           ),
         ],
       ),
@@ -214,13 +270,13 @@ class ProductCard extends StatelessWidget {
                 color: Colors.grey.shade200,
                 child: product.imageUrl != null
                     ? Image.network(
-                        product.imageUrl!,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => const Icon(
-                          Icons.image_not_supported,
-                          size: 48,
-                        ),
-                      )
+                  product.imageUrl!,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => const Icon(
+                    Icons.image_not_supported,
+                    size: 48,
+                  ),
+                )
                     : const Icon(Icons.shopping_bag_outlined, size: 48),
               ),
             ),
@@ -241,18 +297,18 @@ class ProductCard extends StatelessWidget {
                   Text(
                     '${product.finalPrice.toStringAsFixed(2)} ₸/${product.unit}',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   if (product.discount != null && product.discount! > 0) ...[
                     const SizedBox(height: 4),
                     Text(
                       '${product.price.toStringAsFixed(2)} ₸',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            decoration: TextDecoration.lineThrough,
-                            color: Colors.grey,
-                          ),
+                        decoration: TextDecoration.lineThrough,
+                        color: Colors.grey,
+                      ),
                     ),
                   ],
                   const SizedBox(height: 4),
@@ -267,8 +323,8 @@ class ProductCard extends StatelessWidget {
                       Text(
                         product.isInStock ? 'In Stock' : 'Out of Stock',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: product.isInStock ? Colors.green : Colors.red,
-                            ),
+                          color: product.isInStock ? Colors.green : Colors.red,
+                        ),
                       ),
                     ],
                   ),

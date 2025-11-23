@@ -3,7 +3,7 @@ class UserModel {
   final String name;
   final String email;
   final String? profilePicture;
-  final String role; // 'consumer', 'supplier', etc.
+  final String? role; // 'consumer', 'supplier', etc.
   
   UserModel({
     required this.id,
