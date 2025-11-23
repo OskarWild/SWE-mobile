@@ -41,7 +41,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
         userId: user?.id ?? ''
       );
       final orders = ordersData.map((json) => OrderModel.fromJson(json)).toList();
-      
       // Sort by created date (newest first)
       orders.sort((a, b) => b.createdAt.compareTo(a.createdAt));
       

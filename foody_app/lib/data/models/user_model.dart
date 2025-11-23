@@ -3,7 +3,7 @@ class UserModel {
   final String name;
   final String email;
   final String? profilePicture;
-  final String? role; // 'consumer', 'supplier', etc.
+  final String role;
   
   UserModel({
     required this.id,
@@ -20,7 +20,7 @@ class UserModel {
       name: json['name'] ?? '',
       email: json['email'] ?? '',
       profilePicture: json['profile_picture'],
-      role: json['role'] ?? 'consumer',
+      role: json['userType'] ?? 'consumer',
     );
   }
   

@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:foody_app/core/constants/app_constants.dart';
 import 'package:foody_app/data/models/product_model.dart';
+import 'package:foody_app/data/models/category_model.dart';
 
 class ApiService {
   static final ApiService _instance = ApiService._internal();
@@ -129,6 +130,27 @@ class ApiService {
     }
   }
 
+  // Get categories
+  Future<List<CategoryModel>> getCategories({String? userId}) async {
+    try {
+      String url = '${AppConstants.baseUrl}${AppConstants.categoriesEndpoint}$userId';
+
+      final response = await http.get(
+        Uri.parse(url),
+        headers: _headers,
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        return data.map((json) => CategoryModel.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load categories');
+      }
+    } catch (e) {
+      throw Exception('Network error: $e');
+    }
+  }
+
   // Get products with filters
   Future<List<ProductModel>> getProducts({String? userId, String? search, String? categoryId, String? sortBy}) async {
     try {
@@ -137,7 +159,7 @@ class ApiService {
 
       String userIdTemp = userId as String;
       if (userId != '') {
-        queryParams['userId'] = userIdTemp;
+        queryParams['user_id'] = userIdTemp;
       }
       if (search != null && search.isNotEmpty) {
         queryParams['search'] = search;
@@ -264,9 +286,9 @@ class ApiService {
         Uri.parse('${AppConstants.baseUrl}${AppConstants.ordersEndpoint}$userIdTemp'),
         headers: _headers,
       );
-      
       if (response.statusCode == 200) {
-        return jsonDecode(response.body) as List<dynamic>;
+        final decoded = jsonDecode(response.body);
+        return decoded['orders'] as List<dynamic>;
       } else {
         throw Exception('Failed to load orders');
       }

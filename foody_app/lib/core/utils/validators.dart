@@ -61,11 +61,11 @@ class Validators {
   // Username validation
   static String? validateUsername(String? value) {
     if (value == null || value.isEmpty) {
-      return 'validateUsername is required';
+      return 'Username is required';
     }
 
     if (value.length < 2) {
-      return 'validateUsername must be at least 5 characters';
+      return 'Username must be at least 5 characters';
     }
 
     return null;

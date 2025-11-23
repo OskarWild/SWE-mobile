@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:foody_app/data/models/product_model.dart';
+import 'package:foody_app/data/models/category_model.dart';
 import 'package:foody_app/data/services/api_service.dart';
 import 'package:foody_app/providers/cart_provider.dart';
 import 'package:foody_app/providers/auth_provider.dart';
-import 'package:foody_app/presentation/screens/catalog/product_detail_screen.dart';
+import 'package:foody_app/presentation/screens/catalog/category_items_screen.dart';
+import 'package:foody_app/presentation/screens/catalog/add_product_screen.dart';
 import 'package:foody_app/presentation/screens/cart/cart_screen.dart';
 
 class CatalogScreen extends StatefulWidget {
@@ -16,29 +17,20 @@ class CatalogScreen extends StatefulWidget {
 
 class _CatalogScreenState extends State<CatalogScreen> {
   final ApiService _apiService = ApiService();
-  final TextEditingController _searchController = TextEditingController();
 
-  List<ProductModel> _products = [];
+  List<CategoryModel> _categories = [];
   bool _isLoading = false;
   String? _error;
-  String? _selectedSort;
-  String? _selectedCategory;
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() async {
-      _loadProducts();
+      _loadCategories();
     });
   }
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _loadProducts() async {
+  Future<void> _loadCategories() async {
     setState(() {
       _isLoading = true;
       _error = null;
@@ -47,14 +39,9 @@ class _CatalogScreenState extends State<CatalogScreen> {
     try {
       final authProvider = context.read<AuthProvider>();
       final user = authProvider.user;
-      final products = await _apiService.getProducts(
-        userId: user?.id ?? '',
-        search: _searchController.text.isEmpty ? null : _searchController.text,
-        sortBy: _selectedSort,
-        categoryId: _selectedCategory,
-      );
+      final categories = await _apiService.getCategories(userId: user?.id ?? '');
       setState(() {
-        _products = products;
+        _categories = categories;
         _isLoading = false;
       });
     } catch (e) {
@@ -65,275 +52,299 @@ class _CatalogScreenState extends State<CatalogScreen> {
     }
   }
 
-  void _showSortOptions() {
+  void _showCategorySelectionForAddProduct() {
     showModalBottomSheet(
       context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ListTile(
-            leading: const Icon(Icons.sort_by_alpha),
-            title: const Text('Name (A-Z)'),
-            onTap: () {
-              setState(() => _selectedSort = 'name_asc');
-              Navigator.pop(context);
-              _loadProducts();
-            },
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                const Icon(Icons.category, size: 28),
+                const SizedBox(width: 12),
+                Text(
+                  'Select Category',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
           ),
-          ListTile(
-            leading: const Icon(Icons.attach_money),
-            title: const Text('Price: Low to High'),
-            onTap: () {
-              setState(() => _selectedSort = 'price_asc');
-              Navigator.pop(context);
-              _loadProducts();
-            },
+          const Divider(height: 1),
+          Flexible(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: _categories.length,
+              itemBuilder: (context, index) {
+                final category = _categories[index];
+                return ListTile(
+                  leading: Icon(_getCategoryIcon(category.name)),
+                  title: Text(category.name),
+                  subtitle: Text('${category.count} items'),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => AddProductScreen(
+                          categoryName: category.name,
+                        ),
+                      ),
+                    );
+                    if (result == true) {
+                      _loadCategories();
+                    }
+                  },
+                );
+              },
+            ),
           ),
-          ListTile(
-            leading: const Icon(Icons.attach_money),
-            title: const Text('Price: High to Low'),
-            onTap: () {
-              setState(() => _selectedSort = 'price_desc');
-              Navigator.pop(context);
-              _loadProducts();
-            },
-          ),
+          const SizedBox(height: 16),
         ],
       ),
     );
   }
 
+  IconData _getCategoryIcon(String categoryName) {
+    final name = categoryName.toLowerCase();
+    if (name.contains('fruit') || name.contains('vegetable')) {
+      return Icons.local_florist;
+    } else if (name.contains('meat') || name.contains('fish')) {
+      return Icons.set_meal;
+    } else if (name.contains('dairy') || name.contains('milk')) {
+      return Icons.local_drink;
+    } else if (name.contains('bakery') || name.contains('bread')) {
+      return Icons.bakery_dining;
+    } else if (name.contains('beverage') || name.contains('drink')) {
+      return Icons.local_cafe;
+    } else if (name.contains('snack') || name.contains('sweet')) {
+      return Icons.cake;
+    } else {
+      return Icons.shopping_basket;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthProvider>();
+    final isSupplier = authProvider.user?.role == 'supplier';
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Catalog'),
         actions: [
-          Consumer<CartProvider>(
-            builder: (context, cartProvider, child) {
-              return Stack(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.shopping_cart),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const CartScreen(),
-                        ),
-                      );
-                    },
-                    tooltip: 'Cart',
-                  ),
-                  if (cartProvider.itemCount > 0)
-                    Positioned(
-                      right: 8,
-                      top: 8,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
-                        constraints: const BoxConstraints(
-                          minWidth: 16,
-                          minHeight: 16,
-                        ),
-                        child: Text(
-                          '${cartProvider.itemCount}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
+          if (isSupplier)
+          // Add Product button for suppliers
+            IconButton(
+              icon: const Icon(Icons.add_circle),
+              onPressed: _categories.isEmpty ? null : _showCategorySelectionForAddProduct,
+              tooltip: 'Add Product',
+            )
+          else
+          // Shopping cart for consumers
+            Consumer<CartProvider>(
+              builder: (context, cartProvider, child) {
+                return Stack(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.shopping_cart),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const CartScreen(),
                           ),
-                          textAlign: TextAlign.center,
+                        );
+                      },
+                      tooltip: 'Cart',
+                    ),
+                    if (cartProvider.itemCount > 0)
+                      Positioned(
+                        right: 8,
+                        top: 8,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          constraints: const BoxConstraints(
+                            minWidth: 16,
+                            minHeight: 16,
+                          ),
+                          child: Text(
+                            '${cartProvider.itemCount}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
-                    ),
-                ],
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.filter_list),
-            onPressed: _showSortOptions,
-            tooltip: 'Sort',
-          ),
+                  ],
+                );
+              },
+            ),
         ],
       ),
-      body: Column(
-        children: [
-          // Search Bar
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Search products...',
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: _searchController.text.isNotEmpty
-                    ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    _searchController.clear();
-                    _loadProducts();
-                  },
-                )
-                    : null,
-              ),
-              onSubmitted: (_) => _loadProducts(),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _error != null
+          ? Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 64, color: Colors.red),
+            const SizedBox(height: 16),
+            Text('Error: $_error'),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _loadCategories,
+              child: const Text('Retry'),
             ),
-          ),
-
-          // Product List
-          Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : _error != null
-                ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                  const SizedBox(height: 16),
-                  Text('Error: $_error'),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _loadProducts,
-                    child: const Text('Retry'),
-                  ),
-                ],
-              ),
-            )
-                : _products.isEmpty
-                ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.shopping_bag_outlined, size: 64),
-                  const SizedBox(height: 16),
-                  Text(
-                    'No products found',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ],
-              ),
-            )
-                : RefreshIndicator(
-              onRefresh: _loadProducts,
-              child: GridView.builder(
-                padding: const EdgeInsets.all(16),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.7,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                ),
-                itemCount: _products.length,
-                itemBuilder: (context, index) {
-                  final product = _products[index];
-                  return ProductCard(product: product);
-                },
-              ),
+          ],
+        ),
+      )
+          : _categories.isEmpty
+          ? Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.category_outlined, size: 64),
+            const SizedBox(height: 16),
+            Text(
+              'No categories found',
+              style: Theme.of(context).textTheme.titleMedium,
             ),
+          ],
+        ),
+      )
+          : RefreshIndicator(
+        onRefresh: _loadCategories,
+        child: GridView.builder(
+          padding: const EdgeInsets.all(16),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 1.0,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
           ),
-        ],
+          itemCount: _categories.length,
+          itemBuilder: (context, index) {
+            final category = _categories[index];
+            return CategoryCard(
+              category: category,
+              isSupplier: isSupplier,
+            );
+          },
+        ),
       ),
     );
   }
 }
 
-class ProductCard extends StatelessWidget {
-  final ProductModel product;
+class CategoryCard extends StatelessWidget {
+  final CategoryModel category;
+  final bool isSupplier;
 
-  const ProductCard({super.key, required this.product});
+  const CategoryCard({
+    super.key,
+    required this.category,
+    required this.isSupplier,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => ProductDetailScreen(productId: product.id),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => CategoryItemsScreen(
+              categoryName: category.name,
+              isSupplier: isSupplier,
             ),
-          );
-        },
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Theme.of(context).colorScheme.primary.withOpacity(0.8),
+              Theme.of(context).colorScheme.primary,
+            ],
+          ),
+        ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                color: Colors.grey.shade200,
-                child: product.imageUrl != null
-                    ? Image.network(
-                  product.imageUrl!,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => const Icon(
-                    Icons.image_not_supported,
-                    size: 48,
-                  ),
-                )
-                    : const Icon(Icons.shopping_bag_outlined, size: 48),
+            Icon(
+              _getCategoryIcon(category.name),
+              size: 56,
+              color: Colors.white,
+            ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: Text(
+                category.name,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-
-            // Product Info
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.name,
-                    style: Theme.of(context).textTheme.titleMedium,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${product.finalPrice.toStringAsFixed(2)} ₸/${product.unit}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  if (product.discount != null && product.discount! > 0) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      '${product.price.toStringAsFixed(2)} ₸',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        decoration: TextDecoration.lineThrough,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Icon(
-                        product.isInStock ? Icons.check_circle : Icons.cancel,
-                        size: 16,
-                        color: product.isInStock ? Colors.green : Colors.red,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        product.isInStock ? 'In Stock' : 'Out of Stock',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: product.isInStock ? Colors.green : Colors.red,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+            const SizedBox(height: 8),
+            Text(
+              '${category.count}',
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'items',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Colors.white.withOpacity(0.9),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  IconData _getCategoryIcon(String categoryName) {
+    final name = categoryName.toLowerCase();
+    if (name.contains('fruit') || name.contains('vegetable')) {
+      return Icons.local_florist;
+    } else if (name.contains('meat') || name.contains('fish')) {
+      return Icons.set_meal;
+    } else if (name.contains('dairy') || name.contains('milk')) {
+      return Icons.local_drink;
+    } else if (name.contains('bakery') || name.contains('bread')) {
+      return Icons.bakery_dining;
+    } else if (name.contains('beverage') || name.contains('drink')) {
+      return Icons.local_cafe;
+    } else if (name.contains('snack') || name.contains('sweet')) {
+      return Icons.cake;
+    } else {
+      return Icons.shopping_basket;
+    }
   }
 }

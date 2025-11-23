@@ -35,7 +35,7 @@ class AuthProvider with ChangeNotifier {
         id: userId,
         name: userName,
         email: userEmail,
-        role: userType,
+        role: userType as String,
       );
       _isAuthenticated = true;
     }
@@ -101,6 +101,7 @@ class AuthProvider with ChangeNotifier {
         await prefs.setString(AppConstants.userIdKey, _user!.id);
         await prefs.setString(AppConstants.userNameKey, _user!.name);
         await prefs.setString(AppConstants.userEmailKey, _user!.email);
+        await prefs.setString(AppConstants.userTypeKey, _user!.role);
         
         _isLoading = false;
         notifyListeners();
