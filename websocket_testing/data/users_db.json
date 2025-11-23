@@ -1,0 +1,62 @@
+{
+  "kapalaq": {
+    "id": "user_1",
+    "name": "Ruslan",
+    "surname": "Nagimov",
+    "username": "kapalaq",
+    "email": "ruslan.nagimov@nu.edu.kz",
+    "businessName": "Qazcode",
+    "businessType": "IT",
+    "userType": "consumer",
+    "hashed_password": "$2b$12$mMnBad8jbXSLK8Q/9dJamOdFzC/nehyT0RJR044Zu3WnklEIZLSS.",
+    "created_at": "2025-11-23T07:35:17.822523"
+  },
+  "megaslonik": {
+    "id": "user_2",
+    "name": "Alina",
+    "surname": "Malina",
+    "username": "megaslonik",
+    "email": "alina.malina@i.love.you",
+    "businessName": "Google",
+    "businessType": "IT",
+    "userType": "supplier",
+    "hashed_password": "$2b$12$cowsl9xkTxRciKY5y3trWOutwhFsmxd0OhO6ChlH/Pj9M89lnHxPe",
+    "created_at": "2025-11-23T07:36:19.432028"
+  },
+  "kapala": {
+    "id": "user_3",
+    "name": "ruslan",
+    "surname": "nagimov",
+    "username": "kapala",
+    "email": "sdafsadf@sdaf.sadf",
+    "businessName": "asdf",
+    "businessType": "asdfasdf",
+    "userType": "consumer",
+    "hashed_password": "$2b$12$w6Yp48v2ezRbNnRAPQdTzOUJaig/LDL.tD.taK/iLgGczCghS6ebS",
+    "created_at": "2025-11-23T10:43:49.485770"
+  },
+  "megamegaslonik": {
+    "id": "user_4",
+    "name": "alina",
+    "surname": "malina",
+    "username": "megamegaslonik",
+    "email": "asdf@asdf.sdf",
+    "businessName": "asdfasdf",
+    "businessType": "asdfasdf",
+    "userType": "supplier",
+    "hashed_password": "$2b$12$Oy.G7tfr/AKo5tT39/I0L.F7VmYQwA7v9O32dKmF/4oeJN1kHDxAm",
+    "created_at": "2025-11-23T10:47:18.890626"
+  },
+  "qwerty": {
+    "id": "user_5",
+    "name": "asdfasd",
+    "surname": "dasfsdaf",
+    "username": "qwerty",
+    "email": "qwery@dfsg.sdf",
+    "businessName": "asdfasdf",
+    "businessType": "agasdsadg",
+    "userType": "supplier",
+    "hashed_password": "$2b$12$G8YVkrzPbPYuv93Lvd5CVeQqjemics1NbEuh3f31CPQJWLpHq7fWq",
+    "created_at": "2025-11-23T11:04:10.783601"
+  }
+}
