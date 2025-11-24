@@ -33,12 +33,12 @@ class ProductModel {
       description: json['description'] ?? '',
       price: (json['price'] ?? 0).toDouble(),
       unit: json['unit'] ?? 'pcs',
-      imageUrl: json['image_url'],
-      stockLevel: json['stock_level'] ?? 0,
-      categoryId: json['category_id']?.toString() ?? '',
-      supplierId: json['supplier_id']?.toString() ?? '',
+      imageUrl: json['imageUrl'],
+      stockLevel: json['stockLevel'] ?? 0,
+      categoryId: json['category']?.toString() ?? '',
+      supplierId: json['supplier']?.toString() ?? '',
       discount: json['discount']?.toDouble(),
-      minimumOrderQuantity: json['minimum_order_quantity'],
+      minimumOrderQuantity: json['minimumOrderQuantity'],
     );
   }
   

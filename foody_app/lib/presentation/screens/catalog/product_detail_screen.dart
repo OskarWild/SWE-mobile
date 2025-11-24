@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foody_app/presentation/screens/cart/cart_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:foody_app/data/models/product_model.dart';
 import 'package:foody_app/data/services/api_service.dart';
@@ -74,13 +75,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     // View Cart
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        duration: const Duration(seconds: 2),
         content: Text('Added $_quantity ${_product?.unit} to cart'),
         backgroundColor: Colors.green,
         action: SnackBarAction(
           label: 'View Cart',
           textColor: Colors.white,
           onPressed: () {
-            Navigator.pushNamed(context, '/cart');
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => CartScreen(),
+              ),
+            );
           },
         ),
       ),
@@ -293,7 +301,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
               const SizedBox(width: 16),
 
-              // CHANGED: Updated Add to Cart Button with proper functionality
+              // Add to Cart Button
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: _addToCart,

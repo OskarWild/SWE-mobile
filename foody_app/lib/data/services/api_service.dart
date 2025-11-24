@@ -108,13 +108,12 @@ class ApiService {
     try {
       String supplierIdTemp = supplierId as String;
       String url = '${AppConstants.baseUrl}${AppConstants.itemsEndpoint}';
-
       final response = await http.post(
         Uri.parse(url),
         headers: _headers,
         body: jsonEncode({
           'request': jsonEncode(productData),
-          'userId': supplierIdTemp,
+          'user_id': supplierIdTemp
         }),
       );
 
@@ -262,7 +261,7 @@ class ApiService {
   Future<Map<String, dynamic>> createOrder(Map<String, dynamic> orderData) async {
     try {
       final response = await http.post(
-        Uri.parse('${AppConstants.baseUrl}${AppConstants.categoriesEndpoint}'),
+        Uri.parse('${AppConstants.baseUrl}${AppConstants.ordersEndpoint}'),
         headers: _headers,
         body: jsonEncode(orderData),
       );
@@ -301,7 +300,7 @@ class ApiService {
   Future<Map<String, dynamic>> getOrderById(String orderId) async {
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.baseUrl}${AppConstants.ordersEndpoint}$orderId'),
+        Uri.parse('${AppConstants.baseUrl}${AppConstants.ordersEndpoint}detail/$orderId'),
         headers: _headers,
       );
       

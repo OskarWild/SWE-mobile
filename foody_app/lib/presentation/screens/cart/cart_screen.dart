@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foody_app/presentation/screens/cart/checkout_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:foody_app/providers/cart_provider.dart';
 import 'package:foody_app/data/models/cart_item_model.dart';
@@ -124,7 +125,12 @@ class CartScreen extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/checkout');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => CheckoutScreen(),
+                              ),
+                            );
                           },
                           icon: const Icon(Icons.shopping_bag),
                           label: const Text('Proceed to Checkout'),

@@ -5,30 +5,63 @@
     "supplier_id": "user_2",
     "items": [
       {
-        "item_id": "prod_001",
-        "item_name": "Organic Apples",
-        "quantity": 2,
-        "price": 1200.0
+        "id": "prod_001",
+        "supplier": "user_2",
+        "name": "Organic Apples",
+        "description": "Fresh organic red apples from local farms. Crisp and sweet.",
+        "price": 1200.0,
+        "weight": 1.0,
+        "quantity": 150,
+        "category": "Fruits",
+        "unit": "kg",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 150,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_003",
-        "item_name": "Whole Milk",
-        "quantity": 3,
-        "price": 450.0
+        "id": "prod_003",
+        "supplier": "user_2",
+        "name": "Whole Milk",
+        "description": "Fresh whole milk, 3.2% fat. Delivered daily from local dairy farms.",
+        "price": 450.0,
+        "weight": 1.0,
+        "quantity": 100,
+        "category": "Dairy",
+        "unit": "l",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 100,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1563636619-e9143da7973b",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_009",
-        "item_name": "Strawberries",
-        "quantity": 1,
-        "price": 1800.0
+        "id": "prod_009",
+        "supplier": "user_2",
+        "name": "Strawberries",
+        "description": "Fresh, sweet strawberries. Perfect for desserts and smoothies.",
+        "price": 1800.0,
+        "weight": 500.0,
+        "quantity": 60,
+        "category": "Fruits",
+        "unit": "g",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 60,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1464965911861-746a04b4bca6",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 5550.0,
     "delivery_address": "Kabanbay Batyr Ave 53, Astana, Kazakhstan",
     "notes": "Please deliver in the morning",
     "status": "delivered",
-    "created_at": "11/18/2025, 16:37:51",
-    "updated_at": "11/20/2025, 15:37:51"
+    "created_at": "2025-11-19 13:00:28",
+    "updated_at": "2025-11-20 00:00:28"
   },
   "order_002": {
     "id": "order_002",
@@ -36,36 +69,80 @@
     "supplier_id": "user_2",
     "items": [
       {
-        "item_id": "prod_002",
-        "item_name": "Fresh Tomatoes",
-        "quantity": 1,
-        "price": 720.0
+        "id": "prod_002",
+        "supplier": "user_2",
+        "name": "Fresh Tomatoes",
+        "description": "Ripe, juicy tomatoes perfect for salads and cooking.",
+        "price": 800.0,
+        "weight": 1.0,
+        "quantity": 200,
+        "category": "Vegetables",
+        "unit": "kg",
+        "discount_percent": 10,
+        "min_order_qty": 1,
+        "stock_level": 200,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1546470427-e26264be0b0d",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_005",
-        "item_name": "Fresh Carrots",
-        "quantity": 2,
-        "price": 500.0
+        "id": "prod_005",
+        "supplier": "user_2",
+        "name": "Fresh Carrots",
+        "description": "Organic carrots, rich in vitamins and perfect for healthy meals.",
+        "price": 500.0,
+        "weight": 1.0,
+        "quantity": 120,
+        "category": "Vegetables",
+        "unit": "kg",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 120,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_008",
-        "item_name": "Fresh Spinach",
-        "quantity": 1,
-        "price": 900.0
+        "id": "prod_008",
+        "supplier": "user_2",
+        "name": "Fresh Spinach",
+        "description": "Tender baby spinach leaves, washed and ready to eat.",
+        "price": 900.0,
+        "weight": 500.0,
+        "quantity": 70,
+        "category": "Vegetables",
+        "unit": "g",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 70,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1576045057995-568f588f82fb",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_010",
-        "item_name": "Farm Eggs",
-        "quantity": 2,
-        "price": 800.0
+        "id": "prod_010",
+        "supplier": "user_2",
+        "name": "Farm Eggs",
+        "description": "Fresh free-range eggs from local farms. Pack of 10 pieces.",
+        "price": 800.0,
+        "weight": 600.0,
+        "quantity": 90,
+        "category": "Dairy",
+        "unit": "pack",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 90,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 4220.0,
     "delivery_address": "Kabanbay Batyr Ave 53, Astana, Kazakhstan",
     "notes": "",
     "status": "shipped",
-    "created_at": "11/22/2025, 16:37:51",
-    "updated_at": "11/22/2025, 21:37:51"
+    "created_at": "2025-11-23 13:00:28",
+    "updated_at": "2025-11-24 11:00:28"
   },
   "order_003": {
     "id": "order_003",
@@ -73,24 +150,46 @@
     "supplier_id": "user_2",
     "items": [
       {
-        "item_id": "prod_004",
-        "item_name": "Greek Yogurt",
-        "quantity": 3,
-        "price": 617.5
+        "id": "prod_004",
+        "supplier": "user_2",
+        "name": "Greek Yogurt",
+        "description": "Creamy Greek yogurt with high protein content. Natural and unsweetened.",
+        "price": 650.0,
+        "weight": 500.0,
+        "quantity": 80,
+        "category": "Dairy",
+        "unit": "g",
+        "discount_percent": 5,
+        "min_order_qty": 1,
+        "stock_level": 80,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1488477181946-6428a0291777",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_007",
-        "item_name": "Cheddar Cheese",
-        "quantity": 2,
-        "price": 2125.0
+        "id": "prod_007",
+        "supplier": "user_2",
+        "name": "Cheddar Cheese",
+        "description": "Aged cheddar cheese with rich, sharp flavor. Perfect for sandwiches.",
+        "price": 2500.0,
+        "weight": 500.0,
+        "quantity": 50,
+        "category": "Dairy",
+        "unit": "g",
+        "discount_percent": 15,
+        "min_order_qty": 1,
+        "stock_level": 50,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 6102.5,
     "delivery_address": "Kabanbay Batyr Ave 53, Astana, Kazakhstan",
     "notes": "Call before delivery",
     "status": "processing",
-    "created_at": "11/23/2025, 16:37:51",
-    "updated_at": "11/23/2025, 22:37:51"
+    "created_at": "2025-11-24 13:00:28",
+    "updated_at": "2025-11-25 12:00:28"
   },
   "order_004": {
     "id": "order_004",
@@ -98,30 +197,63 @@
     "supplier_id": "user_4",
     "items": [
       {
-        "item_id": "prod_011",
-        "item_name": "Sourdough Bread",
-        "quantity": 2,
-        "price": 1200.0
+        "id": "prod_011",
+        "supplier": "user_4",
+        "name": "Sourdough Bread",
+        "description": "Artisan sourdough bread, freshly baked daily with traditional methods.",
+        "price": 1200.0,
+        "weight": 700.0,
+        "quantity": 40,
+        "category": "Bakery",
+        "unit": "piece",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 40,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1549931319-a545dcf3bc73",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_012",
-        "item_name": "Croissants",
-        "quantity": 1,
-        "price": 1350.0
+        "id": "prod_012",
+        "supplier": "user_4",
+        "name": "Croissants",
+        "description": "Buttery, flaky French croissants. Pack of 4 pieces.",
+        "price": 1500.0,
+        "weight": 300.0,
+        "quantity": 50,
+        "category": "Bakery",
+        "unit": "pack",
+        "discount_percent": 10,
+        "min_order_qty": 1,
+        "stock_level": 50,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1555507036-ab1f4038808a",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_013",
-        "item_name": "Orange Juice",
-        "quantity": 2,
-        "price": 800.0
+        "id": "prod_013",
+        "supplier": "user_4",
+        "name": "Orange Juice",
+        "description": "Freshly squeezed orange juice, 100% natural with no added sugar.",
+        "price": 800.0,
+        "weight": 1.0,
+        "quantity": 80,
+        "category": "Beverages",
+        "unit": "l",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 80,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1600271886742-f049cd451bba",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 5350.0,
     "delivery_address": "Kabanbay Batyr Ave 53, Astana, Kazakhstan",
     "notes": "Please ensure bread is fresh",
     "status": "delivered",
-    "created_at": "11/16/2025, 16:37:51",
-    "updated_at": "11/18/2025, 14:37:51"
+    "created_at": "2025-11-17 13:00:28",
+    "updated_at": "2025-11-17 15:00:28"
   },
   "order_005": {
     "id": "order_005",
@@ -129,24 +261,46 @@
     "supplier_id": "user_4",
     "items": [
       {
-        "item_id": "prod_015",
-        "item_name": "Green Tea",
-        "quantity": 2,
-        "price": 1800.0
+        "id": "prod_015",
+        "supplier": "user_4",
+        "name": "Green Tea",
+        "description": "Premium organic green tea. Box of 25 tea bags.",
+        "price": 1800.0,
+        "weight": 50.0,
+        "quantity": 100,
+        "category": "Beverages",
+        "unit": "box",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 100,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_019",
-        "item_name": "Sparkling Water",
-        "quantity": 1,
-        "price": 1400.0
+        "id": "prod_019",
+        "supplier": "user_4",
+        "name": "Sparkling Water",
+        "description": "Refreshing sparkling mineral water. Pack of 6 bottles.",
+        "price": 1400.0,
+        "weight": 3.0,
+        "quantity": 90,
+        "category": "Beverages",
+        "unit": "pack",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 90,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1523362628745-0c100150b504",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 5000.0,
     "delivery_address": "Kabanbay Batyr Ave 53, Astana, Kazakhstan",
     "notes": "",
     "status": "confirmed",
-    "created_at": "11/23/2025, 16:37:51",
-    "updated_at": "11/25/2025, 04:37:51"
+    "created_at": "2025-11-24 13:00:28",
+    "updated_at": "2025-11-26 07:00:28"
   },
   "order_006": {
     "id": "order_006",
@@ -154,30 +308,63 @@
     "supplier_id": "user_2",
     "items": [
       {
-        "item_id": "prod_001",
-        "item_name": "Organic Apples",
-        "quantity": 5,
-        "price": 1200.0
+        "id": "prod_001",
+        "supplier": "user_2",
+        "name": "Organic Apples",
+        "description": "Fresh organic red apples from local farms. Crisp and sweet.",
+        "price": 1200.0,
+        "weight": 1.0,
+        "quantity": 150,
+        "category": "Fruits",
+        "unit": "kg",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 150,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_006",
-        "item_name": "Bananas",
-        "quantity": 3,
-        "price": 600.0
+        "id": "prod_006",
+        "supplier": "user_2",
+        "name": "Bananas",
+        "description": "Sweet yellow bananas, great source of potassium and energy.",
+        "price": 600.0,
+        "weight": 1.0,
+        "quantity": 180,
+        "category": "Fruits",
+        "unit": "kg",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 180,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_009",
-        "item_name": "Strawberries",
-        "quantity": 2,
-        "price": 1800.0
+        "id": "prod_009",
+        "supplier": "user_2",
+        "name": "Strawberries",
+        "description": "Fresh, sweet strawberries. Perfect for desserts and smoothies.",
+        "price": 1800.0,
+        "weight": 500.0,
+        "quantity": 60,
+        "category": "Fruits",
+        "unit": "g",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 60,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1464965911861-746a04b4bca6",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 11400.0,
     "delivery_address": "Mangilik El Ave 55/20, Astana, Kazakhstan",
     "notes": "Large order for family gathering",
     "status": "delivered",
-    "created_at": "11/13/2025, 16:37:51",
-    "updated_at": "11/14/2025, 13:37:51"
+    "created_at": "2025-11-14 13:00:28",
+    "updated_at": "2025-11-15 02:00:28"
   },
   "order_007": {
     "id": "order_007",
@@ -185,30 +372,63 @@
     "supplier_id": "user_2",
     "items": [
       {
-        "item_id": "prod_002",
-        "item_name": "Fresh Tomatoes",
-        "quantity": 3,
-        "price": 720.0
+        "id": "prod_002",
+        "supplier": "user_2",
+        "name": "Fresh Tomatoes",
+        "description": "Ripe, juicy tomatoes perfect for salads and cooking.",
+        "price": 800.0,
+        "weight": 1.0,
+        "quantity": 200,
+        "category": "Vegetables",
+        "unit": "kg",
+        "discount_percent": 10,
+        "min_order_qty": 1,
+        "stock_level": 200,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1546470427-e26264be0b0d",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_005",
-        "item_name": "Fresh Carrots",
-        "quantity": 2,
-        "price": 500.0
+        "id": "prod_005",
+        "supplier": "user_2",
+        "name": "Fresh Carrots",
+        "description": "Organic carrots, rich in vitamins and perfect for healthy meals.",
+        "price": 500.0,
+        "weight": 1.0,
+        "quantity": 120,
+        "category": "Vegetables",
+        "unit": "kg",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 120,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_008",
-        "item_name": "Fresh Spinach",
-        "quantity": 2,
-        "price": 900.0
+        "id": "prod_008",
+        "supplier": "user_2",
+        "name": "Fresh Spinach",
+        "description": "Tender baby spinach leaves, washed and ready to eat.",
+        "price": 900.0,
+        "weight": 500.0,
+        "quantity": 70,
+        "category": "Vegetables",
+        "unit": "g",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 70,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1576045057995-568f588f82fb",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 4960.0,
     "delivery_address": "Mangilik El Ave 55/20, Astana, Kazakhstan",
     "notes": "Need for salad preparation",
     "status": "delivered",
-    "created_at": "11/20/2025, 16:37:51",
-    "updated_at": "11/22/2025, 01:37:51"
+    "created_at": "2025-11-21 13:00:28",
+    "updated_at": "2025-11-23 09:00:28"
   },
   "order_008": {
     "id": "order_008",
@@ -216,30 +436,63 @@
     "supplier_id": "user_2",
     "items": [
       {
-        "item_id": "prod_003",
-        "item_name": "Whole Milk",
-        "quantity": 5,
-        "price": 450.0
+        "id": "prod_003",
+        "supplier": "user_2",
+        "name": "Whole Milk",
+        "description": "Fresh whole milk, 3.2% fat. Delivered daily from local dairy farms.",
+        "price": 450.0,
+        "weight": 1.0,
+        "quantity": 100,
+        "category": "Dairy",
+        "unit": "l",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 100,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1563636619-e9143da7973b",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_004",
-        "item_name": "Greek Yogurt",
-        "quantity": 4,
-        "price": 617.5
+        "id": "prod_004",
+        "supplier": "user_2",
+        "name": "Greek Yogurt",
+        "description": "Creamy Greek yogurt with high protein content. Natural and unsweetened.",
+        "price": 650.0,
+        "weight": 500.0,
+        "quantity": 80,
+        "category": "Dairy",
+        "unit": "g",
+        "discount_percent": 5,
+        "min_order_qty": 1,
+        "stock_level": 80,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1488477181946-6428a0291777",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_010",
-        "item_name": "Farm Eggs",
-        "quantity": 3,
-        "price": 800.0
+        "id": "prod_010",
+        "supplier": "user_2",
+        "name": "Farm Eggs",
+        "description": "Fresh free-range eggs from local farms. Pack of 10 pieces.",
+        "price": 800.0,
+        "weight": 600.0,
+        "quantity": 90,
+        "category": "Dairy",
+        "unit": "pack",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 90,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 7120.0,
     "delivery_address": "Mangilik El Ave 55/20, Astana, Kazakhstan",
     "notes": "Weekly dairy order",
     "status": "shipped",
-    "created_at": "11/22/2025, 16:37:51",
-    "updated_at": "11/24/2025, 03:37:51"
+    "created_at": "2025-11-23 13:00:28",
+    "updated_at": "2025-11-25 09:00:28"
   },
   "order_009": {
     "id": "order_009",
@@ -247,24 +500,46 @@
     "supplier_id": "user_2",
     "items": [
       {
-        "item_id": "prod_007",
-        "item_name": "Cheddar Cheese",
-        "quantity": 1,
-        "price": 2125.0
+        "id": "prod_007",
+        "supplier": "user_2",
+        "name": "Cheddar Cheese",
+        "description": "Aged cheddar cheese with rich, sharp flavor. Perfect for sandwiches.",
+        "price": 2500.0,
+        "weight": 500.0,
+        "quantity": 50,
+        "category": "Dairy",
+        "unit": "g",
+        "discount_percent": 15,
+        "min_order_qty": 1,
+        "stock_level": 50,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_006",
-        "item_name": "Bananas",
-        "quantity": 2,
-        "price": 600.0
+        "id": "prod_006",
+        "supplier": "user_2",
+        "name": "Bananas",
+        "description": "Sweet yellow bananas, great source of potassium and energy.",
+        "price": 600.0,
+        "weight": 1.0,
+        "quantity": 180,
+        "category": "Fruits",
+        "unit": "kg",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 180,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 3325.0,
     "delivery_address": "Mangilik El Ave 55/20, Astana, Kazakhstan",
     "notes": "",
     "status": "pending",
-    "created_at": "11/23/2025, 16:37:51",
-    "updated_at": "11/23/2025, 16:37:51"
+    "created_at": "2025-11-24 13:00:28",
+    "updated_at": "2025-11-24 13:00:28"
   },
   "order_010": {
     "id": "order_010",
@@ -272,30 +547,63 @@
     "supplier_id": "user_4",
     "items": [
       {
-        "item_id": "prod_011",
-        "item_name": "Sourdough Bread",
-        "quantity": 3,
-        "price": 1200.0
+        "id": "prod_011",
+        "supplier": "user_4",
+        "name": "Sourdough Bread",
+        "description": "Artisan sourdough bread, freshly baked daily with traditional methods.",
+        "price": 1200.0,
+        "weight": 700.0,
+        "quantity": 40,
+        "category": "Bakery",
+        "unit": "piece",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 40,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1549931319-a545dcf3bc73",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_016",
-        "item_name": "Whole Wheat Bread",
-        "quantity": 2,
-        "price": 900.0
+        "id": "prod_016",
+        "supplier": "user_4",
+        "name": "Whole Wheat Bread",
+        "description": "Healthy whole wheat bread, high in fiber and nutrients.",
+        "price": 900.0,
+        "weight": 500.0,
+        "quantity": 45,
+        "category": "Bakery",
+        "unit": "piece",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 45,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1586444248902-2f64eddc13df",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_020",
-        "item_name": "Bagels",
-        "quantity": 2,
-        "price": 1100.0
+        "id": "prod_020",
+        "supplier": "user_4",
+        "name": "Bagels",
+        "description": "Fresh bagels in assorted flavors. Pack of 6 pieces.",
+        "price": 1100.0,
+        "weight": 450.0,
+        "quantity": 55,
+        "category": "Bakery",
+        "unit": "pack",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 55,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1551106652-a5bcf4b29ab6",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 7600.0,
     "delivery_address": "Mangilik El Ave 55/20, Astana, Kazakhstan",
     "notes": "Need fresh bread for the week",
     "status": "delivered",
-    "created_at": "11/19/2025, 16:37:51",
-    "updated_at": "11/21/2025, 00:37:51"
+    "created_at": "2025-11-20 13:00:28",
+    "updated_at": "2025-11-21 12:00:28"
   },
   "order_011": {
     "id": "order_011",
@@ -303,30 +611,63 @@
     "supplier_id": "user_4",
     "items": [
       {
-        "item_id": "prod_012",
-        "item_name": "Croissants",
-        "quantity": 2,
-        "price": 1350.0
+        "id": "prod_012",
+        "supplier": "user_4",
+        "name": "Croissants",
+        "description": "Buttery, flaky French croissants. Pack of 4 pieces.",
+        "price": 1500.0,
+        "weight": 300.0,
+        "quantity": 50,
+        "category": "Bakery",
+        "unit": "pack",
+        "discount_percent": 10,
+        "min_order_qty": 1,
+        "stock_level": 50,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1555507036-ab1f4038808a",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_014",
-        "item_name": "Chocolate Chip Cookies",
-        "quantity": 1,
-        "price": 950.0
+        "id": "prod_014",
+        "supplier": "user_4",
+        "name": "Chocolate Chip Cookies",
+        "description": "Homemade chocolate chip cookies. Pack of 12 pieces.",
+        "price": 1000.0,
+        "weight": 400.0,
+        "quantity": 60,
+        "category": "Bakery",
+        "unit": "pack",
+        "discount_percent": 5,
+        "min_order_qty": 1,
+        "stock_level": 60,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1499636136210-6f4ee915583e",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_018",
-        "item_name": "Blueberry Muffins",
-        "quantity": 2,
-        "price": 1105.0
+        "id": "prod_018",
+        "supplier": "user_4",
+        "name": "Blueberry Muffins",
+        "description": "Soft and moist blueberry muffins. Pack of 6 pieces.",
+        "price": 1300.0,
+        "weight": 400.0,
+        "quantity": 40,
+        "category": "Bakery",
+        "unit": "pack",
+        "discount_percent": 15,
+        "min_order_qty": 1,
+        "stock_level": 40,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1607958996333-41aef7caefaa",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 5860.0,
     "delivery_address": "Mangilik El Ave 55/20, Astana, Kazakhstan",
     "notes": "For morning breakfast",
     "status": "processing",
-    "created_at": "11/23/2025, 16:37:51",
-    "updated_at": "11/24/2025, 23:37:51"
+    "created_at": "2025-11-24 13:00:28",
+    "updated_at": "2025-11-26 02:00:28"
   },
   "order_012": {
     "id": "order_012",
@@ -334,30 +675,63 @@
     "supplier_id": "user_4",
     "items": [
       {
-        "item_id": "prod_013",
-        "item_name": "Orange Juice",
-        "quantity": 3,
-        "price": 800.0
+        "id": "prod_013",
+        "supplier": "user_4",
+        "name": "Orange Juice",
+        "description": "Freshly squeezed orange juice, 100% natural with no added sugar.",
+        "price": 800.0,
+        "weight": 1.0,
+        "quantity": 80,
+        "category": "Beverages",
+        "unit": "l",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 80,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1600271886742-f049cd451bba",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_017",
-        "item_name": "Apple Juice",
-        "quantity": 2,
-        "price": 750.0
+        "id": "prod_017",
+        "supplier": "user_4",
+        "name": "Apple Juice",
+        "description": "Pure apple juice made from fresh apples. No preservatives.",
+        "price": 750.0,
+        "weight": 1.0,
+        "quantity": 70,
+        "category": "Beverages",
+        "unit": "l",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 70,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1600271886742-f049cd451bba",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_019",
-        "item_name": "Sparkling Water",
-        "quantity": 2,
-        "price": 1400.0
+        "id": "prod_019",
+        "supplier": "user_4",
+        "name": "Sparkling Water",
+        "description": "Refreshing sparkling mineral water. Pack of 6 bottles.",
+        "price": 1400.0,
+        "weight": 3.0,
+        "quantity": 90,
+        "category": "Beverages",
+        "unit": "pack",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 90,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1523362628745-0c100150b504",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 6700.0,
     "delivery_address": "Mangilik El Ave 55/20, Astana, Kazakhstan",
     "notes": "Beverage stock for home",
     "status": "confirmed",
-    "created_at": "11/23/2025, 16:37:51",
-    "updated_at": "11/23/2025, 23:37:51"
+    "created_at": "2025-11-24 13:00:28",
+    "updated_at": "2025-11-25 21:00:28"
   },
   "order_013": {
     "id": "order_013",
@@ -365,18 +739,29 @@
     "supplier_id": "user_4",
     "items": [
       {
-        "item_id": "prod_015",
-        "item_name": "Green Tea",
-        "quantity": 3,
-        "price": 1800.0
+        "id": "prod_015",
+        "supplier": "user_4",
+        "name": "Green Tea",
+        "description": "Premium organic green tea. Box of 25 tea bags.",
+        "price": 1800.0,
+        "weight": 50.0,
+        "quantity": 100,
+        "category": "Beverages",
+        "unit": "box",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 100,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 5400.0,
     "delivery_address": "Mangilik El Ave 55/20, Astana, Kazakhstan",
     "notes": "Love this tea!",
     "status": "delivered",
-    "created_at": "11/09/2025, 16:37:51",
-    "updated_at": "11/10/2025, 16:37:51"
+    "created_at": "2025-11-10 13:00:28",
+    "updated_at": "2025-11-11 15:00:28"
   },
   "order_014": {
     "id": "order_014",
@@ -384,24 +769,46 @@
     "supplier_id": "user_2",
     "items": [
       {
-        "item_id": "prod_006",
-        "item_name": "Bananas",
-        "quantity": 2,
-        "price": 600.0
+        "id": "prod_006",
+        "supplier": "user_2",
+        "name": "Bananas",
+        "description": "Sweet yellow bananas, great source of potassium and energy.",
+        "price": 600.0,
+        "weight": 1.0,
+        "quantity": 180,
+        "category": "Fruits",
+        "unit": "kg",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 180,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_010",
-        "item_name": "Farm Eggs",
-        "quantity": 1,
-        "price": 800.0
+        "id": "prod_010",
+        "supplier": "user_2",
+        "name": "Farm Eggs",
+        "description": "Fresh free-range eggs from local farms. Pack of 10 pieces.",
+        "price": 800.0,
+        "weight": 600.0,
+        "quantity": 90,
+        "category": "Dairy",
+        "unit": "pack",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 90,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 2000.0,
     "delivery_address": "Kabanbay Batyr Ave 53, Astana, Kazakhstan",
     "notes": "Quick restock",
     "status": "cancelled",
-    "created_at": "11/21/2025, 16:37:51",
-    "updated_at": "11/22/2025, 09:37:51"
+    "created_at": "2025-11-22 13:00:28",
+    "updated_at": "2025-11-23 11:00:28"
   },
   "order_015": {
     "id": "order_015",
@@ -409,23 +816,45 @@
     "supplier_id": "user_4",
     "items": [
       {
-        "item_id": "prod_011",
-        "item_name": "Sourdough Bread",
-        "quantity": 1,
-        "price": 1200.0
+        "id": "prod_011",
+        "supplier": "user_4",
+        "name": "Sourdough Bread",
+        "description": "Artisan sourdough bread, freshly baked daily with traditional methods.",
+        "price": 1200.0,
+        "weight": 700.0,
+        "quantity": 40,
+        "category": "Bakery",
+        "unit": "piece",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 40,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1549931319-a545dcf3bc73",
+        "created_at": "2025-11-24 13:00:28"
       },
       {
-        "item_id": "prod_013",
-        "item_name": "Orange Juice",
-        "quantity": 1,
-        "price": 800.0
+        "id": "prod_013",
+        "supplier": "user_4",
+        "name": "Orange Juice",
+        "description": "Freshly squeezed orange juice, 100% natural with no added sugar.",
+        "price": 800.0,
+        "weight": 1.0,
+        "quantity": 80,
+        "category": "Beverages",
+        "unit": "l",
+        "discount_percent": 0,
+        "min_order_qty": 1,
+        "stock_level": 80,
+        "is_available": true,
+        "image_url": "https://images.unsplash.com/photo-1600271886742-f049cd451bba",
+        "created_at": "2025-11-24 13:00:28"
       }
     ],
     "total_amount": 2000.0,
     "delivery_address": "Mangilik El Ave 55/20, Astana, Kazakhstan",
     "notes": "",
     "status": "pending",
-    "created_at": "11/23/2025, 16:37:51",
-    "updated_at": "11/23/2025, 16:37:51"
+    "created_at": "2025-11-24 13:00:28",
+    "updated_at": "2025-11-24 13:00:28"
   }
 }

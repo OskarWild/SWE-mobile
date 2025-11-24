@@ -67,31 +67,20 @@ class CategoryResponse(BaseModel):
     name: str
     count: int
 
-class OrderItemRequest(BaseModel):
-    item_id: str
-    quantity: int
-    price: float
-
 class OrderRequest(BaseModel):
     user_id: str
     supplier_id: str
-    items: List[OrderItemRequest]
+    items: List[ItemResponse]
     total_amount: float
     delivery_address: str
     notes: Optional[str] = None
     status: str = "pending"
 
-class OrderItemResponse(BaseModel):
-    item_id: str
-    quantity: int
-    price: float
-    item_name: Optional[str] = None
-
 class OrderResponse(BaseModel):
     id: str
     user_id: str
     supplier_id: str
-    items: List[OrderItemResponse]
+    items: List[ItemResponse]
     total_amount: float
     delivery_address: str
     notes: Optional[str] = None

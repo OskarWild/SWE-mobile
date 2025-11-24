@@ -54,9 +54,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           groupedBySupplier[supplierId] = [];
         }
         groupedBySupplier[supplierId]!.add({
-          'product_id': item.product.id,
+          'product': item.product,
           'quantity': item.quantity,
-          'price': item.product.finalPrice,
+          'price': item.product.price,
         });
       }
 
@@ -72,15 +72,46 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
         // Calculate total for this supplier's items
         double supplierTotal = 0;
+
+        // Convert ProductModel to ItemResponse format
+        final List<Map<String, dynamic>> formattedItems = [];
+
         for (final item in items) {
-          supplierTotal += (item['price'] as double) * (item['quantity'] as int);
+          final product = item['product'];
+          final quantity = item['quantity'] as int;
+          final price = item['price'] as double;
+
+          // Calculate final price (considering discount if available)
+          final discountPercent = product.discount ?? 0.0;
+          final finalPrice = price * (1 - discountPercent / 100);
+
+          supplierTotal += finalPrice * quantity;
+
+          // Format item according to ItemResponse model
+          formattedItems.add({
+            'id': product.id,
+            'name': product.name,
+            'description': product.description,
+            'price': price,
+            'finalPrice': finalPrice,
+            'quantity': quantity,
+            'weight': 0.0, // Add weight if available in your ProductModel, otherwise default
+            'category': product.categoryId,
+            'unit': product.unit,
+            'discountPercent': discountPercent,
+            'minimumOrderQuantity': product.minimumOrderQuantity ?? 1,
+            'stockLevel': product.stockLevel,
+            'isAvailable': product.stockLevel > 0,
+            'supplier': supplierId,
+            'createdAt': DateTime.now().toIso8601String(),
+          });
         }
 
         // Prepare order data for this supplier
         final orderData = {
           'user_id': user?.id ?? '',
           'supplier_id': supplierId,
-          'items': items,
+          'items': formattedItems,
           'total_amount': supplierTotal,
           'delivery_address': _addressController.text.trim(),
           'notes': _notesController.text.trim().isNotEmpty
@@ -107,7 +138,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              createdOrderIds.length == 1
+              createdOrderIds.length <= 1
                   ? 'Order placed successfully!'
                   : '${createdOrderIds.length} orders placed successfully!',
             ),
@@ -353,7 +384,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                       ),
                       subtitle: Text(
-                        '${item.quantity} ${item.product.unit} × ${item.product.finalPrice.toStringAsFixed(2)} ₸',
+                        '${item.quantity} ${item.product.unit} × ${(item.product.price * (1 - (item.product.discount ?? 0) / 100)).toStringAsFixed(2)} ₸',
                         style: TextStyle(
                           color: Colors.grey.shade600,
                         ),

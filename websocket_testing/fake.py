@@ -375,12 +375,8 @@ def create_simulated_order(order_id, user_id, supplier_id, items_data, delivery_
         item_total = final_price * quantity
 
         # TODO: make items more items in order insertion
-        item_data = {
-            'item_id': item_id,
-            'item_name': catalog_item['name'],
-            'quantity': quantity,
-            'price': final_price
-        }
+        item_data = catalog_item.to_dict()
+        item_data['created_at'] = item_data['created_at'].strftime("%Y-%m-%d %H:%M:%S")
         enriched_items.append(item_data)
         total_amount += item_total
 
@@ -393,8 +389,8 @@ def create_simulated_order(order_id, user_id, supplier_id, items_data, delivery_
         'delivery_address': delivery_address,
         'notes': notes,
         'status': status,
-        'created_at': created_at.strftime("%m/%d/%Y, %H:%M:%S"),
-        'updated_at': created_at.strftime("%m/%d/%Y, %H:%M:%S") if status == 'pending' else (created_at + timedelta(hours=random.randint(1, 48))).strftime("%m/%d/%Y, %H:%M:%S")
+        'created_at': created_at.strftime("%Y-%m-%d %H:%M:%S"),
+        'updated_at': created_at.strftime("%Y-%m-%d %H:%M:%S") if status == 'pending' else (created_at + timedelta(hours=random.randint(1, 48))).strftime("%Y-%m-%d %H:%M:%S")
     }
 
     fake_orders_db[order_id] = new_order

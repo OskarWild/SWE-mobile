@@ -29,7 +29,7 @@ class CartItemModel {
   // From JSON
   factory CartItemModel.fromJson(Map<String, dynamic> json) {
     return CartItemModel(
-      product: ProductModel.fromJson(json['product']),
+      product: ProductModel.fromJson(json),
       quantity: json['quantity'] ?? 1,
     );
   }

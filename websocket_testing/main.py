@@ -43,7 +43,7 @@ fake_catalog_db = fake_catalog_db.astype({
     'min_order_qty': int, 'stock_level': int, 'is_available': bool,
     'image_url': str
 })
-fake_catalog_db['created_at'] = pd.to_datetime(fake_catalog_db['created_at'])
+# fake_catalog_db['created_at'] = pd.to_datetime(fake_catalog_db['created_at'])
 
 # In-memory fake orders database
 orders_db_path = './data/orders_db.json'
@@ -129,6 +129,8 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
 
 def row_to_item_response(row) -> ItemResponse:
     """Convert DataFrame row to ItemResponse"""
+    if isinstance(row, ItemResponse):
+        return row
     final_price = row['price'] * (1 - row['discount_percent'] / 100)
     return ItemResponse(
         id=str(row['id']),
@@ -146,7 +148,7 @@ def row_to_item_response(row) -> ItemResponse:
         stockLevel=int(row['stock_level']),
         isAvailable=bool(row['is_available']),
         imageUrl=row['image_url'] if pd.notna(row['image_url']) else None,
-        createdAt=row['created_at'].isoformat() if pd.notna(row['created_at']) else datetime.utcnow().isoformat()
+        createdAt=row['created_at'].strftime("%Y-%m-%d %H:%M:%S") if pd.notna(row['created_at']) and type(row['created_at']) != str else datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     )
 
 
@@ -323,7 +325,6 @@ async def get_items(
 
     # Convert to list of ItemResponse
     items = [row_to_item_response(row) for _, row in filtered_df.iterrows()]
-
     return items
 
 @app.post("/api/items/", response_model=ItemResponse, status_code=status.HTTP_201_CREATED)
@@ -418,22 +419,22 @@ async def get_categories(user_id: str): # = Depends(verify_token)):
 @app.get("/api/items/{item_id}", response_model=ItemResponse)
 async def get_item_by_id(
     item_id: str,
-    user_id: str, # = Depends(verify_token)
+    # user_id: str, # = Depends(verify_token)
 ):
     """Get a specific item by ID"""
     global fake_catalog_db
 
-    user = None
-    for u in fake_users_db.values():
-        if u['id'] == user_id:
-            user = u
-            break
-
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Only suppliers can add items"
-        )
+    # user = None
+    # for u in fake_users_db.values():
+    #     if u['id'] == user_id:
+    #         user = u
+    #         break
+#
+    # if not user:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_403_FORBIDDEN,
+    #         detail="Only suppliers can add items"
+    #     )
 
     if fake_catalog_db.empty:
         raise HTTPException(
@@ -456,7 +457,6 @@ async def get_item_by_id(
 @app.put("/api/items/{item_id}", response_model=ItemResponse)
 async def update_item(
     item_id: str,
-    request: ItemRequest,
     user_id: str, # = Depends(verify_token)
 ):
     """Update an existing item (supplier only, own items only)"""
@@ -569,12 +569,12 @@ async def delete_item(
 @app.post("/api/orders/", response_model=OrderResponse, status_code=status.HTTP_201_CREATED)
 async def create_order(
     request: OrderRequest,
-    user_id: str, # = Depends(verify_token)
 ):
     """Create a new order"""
     global fake_orders_db
 
     # Get user info
+    user_id = request.user_id
     user = None
     for u in fake_users_db.values():
         if u['id'] == user_id:
@@ -609,30 +609,14 @@ async def create_order(
     # Generate order ID
     order_id = f"order_{len(fake_orders_db) + 1}"
 
-    # Enrich items with item names
-    enriched_items = []
-    for item in request.items:
-        item_data = {
-            'item_id': item.item_id,
-            'quantity': item.quantity,
-            'price': item.price
-        }
-
-        # Try to get item name from catalog
-        if not fake_catalog_db.empty:
-            catalog_item = fake_catalog_db[fake_catalog_db['id'] == item.item_id]
-            if not catalog_item.empty:
-                item_data['item_name'] = catalog_item.iloc[0]['name']
-
-        enriched_items.append(item_data)
 
     # Create order
-    now = datetime.utcnow().isoformat()
+    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     new_order = {
         'id': order_id,
         'user_id': request.user_id,
         'supplier_id': request.supplier_id,
-        'items': enriched_items,
+        'items': request.items,
         'total_amount': request.total_amount,
         'delivery_address': request.delivery_address,
         'notes': request.notes,
@@ -644,8 +628,8 @@ async def create_order(
     fake_orders_db[order_id] = new_order
 
     # Save immediately
-    with open(orders_db_path, 'w') as f:
-        json.dump(fake_orders_db, f, indent=2)
+    print(order_id)
+    print(fake_orders_db[order_id])
 
     return OrderResponse(**new_order)
 
@@ -673,11 +657,11 @@ async def get_user_orders(
         )
 
     # Check authorization - users can only see their own orders, suppliers can see orders placed with them
-    # if user['userType'] == 'customer' and user['id'] != user_id:
-    #     raise HTTPException(
-    #         status_code=status.HTTP_403_FORBIDDEN,
-    #         detail="Cannot view orders for another user"
-    #     )
+    if user['userType'] == 'consumer' and user['id'] != user_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Cannot view orders for another user"
+        )
 
     # Filter orders
     user_orders = []
@@ -687,15 +671,18 @@ async def get_user_orders(
         if user['userType'] == 'consumer':
             if order['user_id'] == user_id:
                 if status_filter is None or order['status'] == status_filter:
+                    order['items'] = [row_to_item_response(item) for item in order['items']]
                     user_orders.append(OrderResponse(**order))
         elif user['userType'] == 'supplier':
             if order['supplier_id'] == user['id']:
                 if status_filter is None or order['status'] == status_filter:
+                    order['items'] = [row_to_item_response(item) for item in order['items']]
+                    print(order['created_at'])
                     user_orders.append(OrderResponse(**order))
 
     # Sort by created_at descending (newest first)
     user_orders.sort(key=lambda x: x.created_at, reverse=True)
-    print(user_orders)
+
     return OrdersResponse(
         orders=user_orders
     )
@@ -703,23 +690,24 @@ async def get_user_orders(
 @app.get("/api/orders/detail/{order_id}", response_model=OrderResponse)
 async def get_order_by_id(
     order_id: str,
-    user_id: str, # = Depends(verify_token)
+    # user_id: str, # = Depends(verify_token)
 ):
     """Get a specific order by ID"""
     global fake_orders_db
 
     # Get user info
-    user = None
-    for u in fake_users_db.values():
-        if u['id'] == user_id:
-            user = u
-            break
-
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User not found"
-        )
+    # user = None
+    # for u in fake_users_db.values():
+    #     if u['id'] == user_id:
+    #         user = u
+    #         break
+#
+    # print([u['id'] for u in fake_users_db.values()])
+    # if not user:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_401_UNAUTHORIZED,
+    #         detail="User not found"
+    #     )
 
     # Find order
     order = fake_orders_db.get(order_id)
@@ -731,17 +719,19 @@ async def get_order_by_id(
         )
 
     # Check authorization
-    if user['userType'] == 'customer' and order['user_id'] != user['id']:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Cannot view another user's order"
-        )
-    elif user['userType'] == 'supplier' and order['supplier_id'] != user['id']:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Cannot view orders from other suppliers"
-        )
+    # if user['userType'] == 'customer' and order['user_id'] != user['id']:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_403_FORBIDDEN,
+    #         detail="Cannot view another user's order"
+    #     )
+    # elif user['userType'] == 'supplier' and order['supplier_id'] != user['id']:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_403_FORBIDDEN,
+    #         detail="Cannot view orders from other suppliers"
+    #     )
 
+    print(order)
+    order['items'] = [row_to_item_response(item) for item in order['items']]
     return OrderResponse(**order)
 
 @app.patch("/api/orders/{order_id}/", response_model=OrderResponse)
@@ -818,7 +808,7 @@ async def update_order_status(
 
     # Update order
     order['status'] = new_status
-    order['updated_at'] = datetime.utcnow().isoformat()
+    order['updated_at'] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
 
     # Save immediately
     with open(orders_db_path, 'w') as f:
