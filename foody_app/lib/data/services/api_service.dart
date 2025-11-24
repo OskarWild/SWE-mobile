@@ -9,7 +9,7 @@ class ApiService {
   static final ApiService _instance = ApiService._internal();
   factory ApiService() => _instance;
   ApiService._internal();
-  
+
   String? _token;
 
   // Get headers with token
@@ -22,27 +22,27 @@ class ApiService {
     }
     return headers;
   }
-  
+
   // Initialize token from storage
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
     _token = prefs.getString(AppConstants.tokenKey);
   }
-  
+
   // Save token
   Future<void> saveToken(String token) async {
     _token = token;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(AppConstants.tokenKey, token);
   }
-  
+
   // Clear token
   Future<void> clearToken() async {
     _token = null;
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(AppConstants.tokenKey);
   }
-  
+
   // Login
   Future<Map<String, dynamic>> login(String username, String password) async {
     try {
@@ -54,7 +54,7 @@ class ApiService {
           'password': password,
         }),
       );
-      
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['token'] != null) {
@@ -69,7 +69,7 @@ class ApiService {
       return {'success': false, 'message': 'Network error: $e'};
     }
   }
-  
+
   // Register
   Future<Map<String, dynamic>> register(String name, String surname, String username, String email, String businessName, String businessType, String password, String userType) async {
     try {
@@ -87,7 +87,7 @@ class ApiService {
           'userType': userType
         }),
       );
-      
+
       if (response.statusCode == 201 || response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['token'] != null) {
@@ -108,18 +108,18 @@ class ApiService {
     try {
       String supplierIdTemp = supplierId as String;
       String url = '${AppConstants.baseUrl}${AppConstants.itemsEndpoint}';
+
       final response = await http.post(
-        Uri.parse(url),
+        Uri.parse(url).replace(
+          queryParameters: {'user_id': supplierId},
+        ),
         headers: _headers,
-        body: jsonEncode({
-          'request': jsonEncode(productData),
-          'user_id': supplierIdTemp
-        }),
+        body: jsonEncode(productData),
       );
 
       if (response.statusCode == 201 || response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return {'success': data['success'], 'data': {'message': data['message']}};
+        return {'success': data['status'], 'data': {'message': data['message']}};
       } else {
         final error = jsonDecode(response.body);
         return {'success': false, 'message': error['message'] ?? 'Product Creation failed'};
@@ -173,12 +173,12 @@ class ApiService {
       if (queryParams.isNotEmpty) {
         url += '?${Uri(queryParameters: queryParams).query}';
       }
-      
+
       final response = await http.get(
         Uri.parse(url),
         headers: _headers,
       );
-      
+
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         return data.map((json) => ProductModel.fromJson(json)).toList();
@@ -265,7 +265,7 @@ class ApiService {
         headers: _headers,
         body: jsonEncode(orderData),
       );
-      
+
       if (response.statusCode == 201 || response.statusCode == 200) {
         return {'success': true, 'data': jsonDecode(response.body)};
       } else {
@@ -276,7 +276,7 @@ class ApiService {
       return {'success': false, 'message': 'Network error: $e'};
     }
   }
-  
+
   // Get user orders
   Future<List<dynamic>> getOrders({String? userId}) async {
     try {
@@ -295,7 +295,7 @@ class ApiService {
       throw Exception('Network error: $e');
     }
   }
-  
+
   // Get order by ID
   Future<Map<String, dynamic>> getOrderById(String orderId) async {
     try {
@@ -303,7 +303,7 @@ class ApiService {
         Uri.parse('${AppConstants.baseUrl}${AppConstants.ordersEndpoint}detail/$orderId'),
         headers: _headers,
       );
-      
+
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
@@ -313,7 +313,7 @@ class ApiService {
       throw Exception('Network error: $e');
     }
   }
-  
+
   // Cancel order
   Future<Map<String, dynamic>> cancelOrder(String orderId) async {
     try {
@@ -322,7 +322,7 @@ class ApiService {
         headers: _headers,
         body: jsonEncode({'status': 'cancelled'}),
       );
-      
+
       if (response.statusCode == 200) {
         return {'success': true, 'data': jsonDecode(response.body)};
       } else {

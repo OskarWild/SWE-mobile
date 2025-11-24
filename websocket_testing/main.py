@@ -327,7 +327,7 @@ async def get_items(
     items = [row_to_item_response(row) for _, row in filtered_df.iterrows()]
     return items
 
-@app.post("/api/items/", response_model=ItemResponse, status_code=status.HTTP_201_CREATED)
+@app.post("/api/items/", response_model=ConfirmationResponse, status_code=status.HTTP_201_CREATED)
 async def add_item(
     request: ItemRequest,
     user_id: str, # = Depends(verify_token)
